@@ -14,6 +14,19 @@ function PostagemController(app) {
             db.close()
         })()
     }
+    app.post('/noticias', inserir)
+    function inserir(req, res) {
+        (async () => {
+            const db = await open({
+                filename: './infra/dados.db',
+                driver: sqlite3.Database
+            })
+            await db.run(`INSERT INTO noticias(titulo,conteudo, autor, image) 
+            VALUES(?,?,?,?)`, req.body.titulo, req.body.conteudo, req.body.autor,req.body.image)
+            res.send(`Tarefa: ${req.body.titulo} inserida com sucesso.`)
+            db.close()
+        })()
+    }
     // app.get('/tecnologia/id/:id', buscarTitulo)
     // function buscarTitulo(req, res) {
     //     (async () => {
@@ -30,18 +43,7 @@ function PostagemController(app) {
     //         db.close()
     //     })()
     // }
-    // app.post('/tecnologia', inserir)
-    // function inserir(req, res) {
-    //     (async () => {
-    //         const db = await open({
-    //             filename: './src/infra/bdTarefas.db',
-    //             driver: sqlite3.Database
-    //         })
-    //         await db.run(`INSERT INTO Tecnologia(titulo,descricao,status,data_criacao,id_usuario,img) VALUES(?,?,?,?,?,?)`, req.body.titulo, req.body.descricao, req.body.status,req.body.data_criacao,req.body.id_usuario, req.body.img)
-    //         res.send(`Tarefa: ${req.body.titulo} inserida com sucesso.`)
-    //         db.close()
-    //     })()
-    // }
+    
     // app.delete('/tecnologia/id/:id', deletarTitulo)
     // function deletarTitulo(req, res) {
     //     (async () => {
